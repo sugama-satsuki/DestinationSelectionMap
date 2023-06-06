@@ -21,7 +21,7 @@
                 </nav>
             </div>
             <div class="header__content">
-                <h1>Love delicious food!</h1>
+                <h1>Love Map!</h1>
                 <img src="./imgs/eat_kakigori.png" />
             </div>
         <div>
@@ -30,11 +30,29 @@
         <div class="content__inner">
             <div class="section">
                 <div class="mapArea">
-                    <div class="geolonia" data-lng="139.6503" data-lat="35.6762" data-zoom="10" data-style="geolonia/basic-v1"></div>
+                    <div class="geolonia" data-lng="127.75362909" data-lat="26.22104709" data-zoom="11.10862549" data-style="geolonia/basic-v1"></div>
                 </div>
                 <div class="description">
-                    <h2>美味しい野菜がいっぱい！</h2>
-                    <p>無化学肥料・無農薬で作られた野菜はとても美味しいです。。。</p>
+                    <h2>沖縄県のマップ</h2>
+                    <p></p>
+                </div>
+            </div>
+            <div class="section">
+                <div class="description">
+                    <h2>広島県のマップ</h2>
+                    <p></p>
+                </div>
+                <div class="mapArea">
+                    <div class="geolonia" data-lng="127.75362909" data-lat="26.22104709" data-zoom="11.10862549" data-style="geolonia/basic-v1"></div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="mapArea">
+                    <div class="geolonia" data-lng="127.75362909" data-lat="26.22104709" data-zoom="11.10862549" data-style="geolonia/basic-v1"></div>
+                </div>
+                <div class="description">
+                    <h2>北海道のマップ</h2>
+                    <p></p>
                 </div>
             </div>
         </div>
@@ -44,5 +62,12 @@
 
     </footer>
     <script type="text/javascript" src="https://cdn.geolonia.com/dev/embed?geolonia-api-key=9cfbb91736564de2a2e1a5faae05ff78"></script>
+    <script>
+        if (!geolonia.supported()) {
+        alert('Your browser does not support Mapbox GL.')
+        } else {
+        const map = new geolonia.Map('#map') 
+        }
+    </script>
 </body>
 </html>
