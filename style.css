@@ -89,12 +89,13 @@ main {
 
 
 /* ------ id ------ */
-#marker1 {
+#marker1, #marker2 {
     width: 40px;
     height: 40px;
     cursor: pointer;
 }
-#marker1 > img {
+#marker1 > img,
+#marker2 > img {
     width: 100%;
 }
 
