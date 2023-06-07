@@ -36,6 +36,7 @@
                         data-lat="26.22104709" 
                         data-zoom="11.10862549" 
                         data-style="geolonia/midnight"
+                        data-marker-color="#cc0000"
                         data-navigation-control="on"
                         data-geolocate-control="on"
                         data-fullscreen-control="on"
@@ -47,6 +48,10 @@
                     <p></p>
                 </div>
             </div>
+            <!-- カスタムマーカー -->
+            <div id="marker1">
+                <img src="./imgs/pin.png" alt="pin" />
+            </div>
             <div class="section">
                 <div class="mapArea">
                     <div 
@@ -56,13 +61,20 @@
                         data-zoom="11.10862549" 
                         data-style="geolonia/basic-v1"
                         data-navigation-control="off"
-                        data-navigation-control="on"
+                        data-scale-control="on"
+                        data-custom-maker="#marker1"
+                        data-custom-maker-offset="0, 0"
                     ></div>
                 </div>
                 <div class="description">
                     <h2>広島県のマップ</h2>
                     <p></p>
                 </div>
+            </div>
+
+            <!-- カスタムマーカー -->
+            <div id="marker2">
+                <img src="./imgs/finger.png" alt="finger" />
             </div>
             <div class="section">
                 <div class="mapArea">
@@ -74,6 +86,8 @@
                         data-style="geolonia/red-planet"
                         data-navigation-control="off"
                         data-geolocate-control="on"
+                        data-custom-maker="#marker2"
+                        data-custom-maker-offset="25, -25"
                     ></div>
                 </div>
                 <div class="description">
@@ -83,7 +97,9 @@
             </div>
             <div class="section">
                 <div class="mapArea">
+                    <!-- idをつける --> 
                     <div 
+                        id="map"
                         class="geolonia" 
                         data-lng="127.75362909" 
                         data-lat="26.22104709" 
@@ -105,12 +121,6 @@
 
     </footer>
     <script type="text/javascript" src="https://cdn.geolonia.com/dev/embed?geolonia-api-key=9cfbb91736564de2a2e1a5faae05ff78"></script>
-    <script>
-        if (!geolonia.supported()) {
-        alert('Your browser does not support Mapbox GL.')
-        } else {
-        const map = new geolonia.Map('#map') 
-        }
-    </script>
+    <script type="text/javascript" src="./script/sample.js"></script>
 </body>
 </html>
