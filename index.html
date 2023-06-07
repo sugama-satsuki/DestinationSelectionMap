@@ -7,6 +7,7 @@
     <title></title>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="./script/sample.js"></script>
+    <script id="exe-geojson" type="application/json" src="./data/data.json"></script>
 </head>
 <body>
     <header>
@@ -99,7 +100,7 @@
             <div class="section">
                 <div class="mapArea">
                     <!-- idをつける --> 
-                    <div 
+                    <!-- <div 
                         id="map"
                         class="geolonia" 
                         data-lng="127.75362909" 
@@ -109,6 +110,22 @@
                         data-navigation-control="off"
                         data-fullscreen-control="on"
                         data-marker="off"
+                    ></div> -->
+                    <div
+                        class="geolonia"
+                        data-geojson="#exe-geojson"
+                    ></div>
+                </div>
+                <div class="description">
+                    <h2>屋久島のマップ</h2>
+                    <p></p>
+                </div>
+            </div>
+            <div class="section">
+                <div class="mapArea">
+                    <div
+                        class="geolonia"
+                        data-geojson="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
                     ></div>
                 </div>
                 <div class="description">
