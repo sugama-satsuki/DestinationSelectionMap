@@ -7,7 +7,6 @@ body {
     margin: 0;
     font-size: 14px;
     height: 100vh;
-    overflow: hidden;
 }
 
 header {
@@ -128,16 +127,8 @@ button:hover {
 }
 
 main {
-    display: none;
-    /* background-color: #EEEBE7;
-    height: 10vh;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    overflow: hidden; */
 }
 main > .content__inner {
-    visibility: hidden;
 }
 
 .section {
@@ -148,12 +139,10 @@ main > .content__inner {
     width: 70%;
 }
 .section > .description {
-    background-color: rgba(255, 255,255, 0.8);
+    background-color: #eeebe7;
     padding: 32px 40px;
     position: absolute;
     top: 40px;
-    right: 0;
-    width: 40%;
 }
 
 .geolonia {
