@@ -411,7 +411,7 @@
         <div class="content__inner">
             <div class="nav__wrapper">
                 <div class="logo">
-                    Vegetable
+                    DestinationMap
                 </div>
                 <nav>
                     <span>menu1</span>
@@ -420,8 +420,45 @@
                 </nav>
             </div>
             <div class="header__content">
-                <h1>Love Map!</h1>
-                <img src="./imgs/eat_kakigori.png" />
+                <h1>Let's go on </h1>
+                <h1>a wonderful trip!</h1>
+                <p>行ってみたい場所を選択してください。</p>
+                <div class="searchArea">
+                    <select>
+                        <option>沖縄</option>
+                        <option>北海道</option>
+                        <option>京都</option>
+                        <option>鹿児島</option>
+                        <option>東京</option>
+                        <option>奈良</option>
+                        <option>広島</option>
+                        <option>神奈川</option>
+                        <option>兵庫</option>
+                        <option>愛媛</option>
+                    </select>
+                    <select>
+                        <option>美術館</option>
+                        <option>古い街並み</option>
+                        <option>海/川</option>
+                        <option>山</option>
+                        <option>パワースポット</option>
+                        <option>お寺/神社</option>
+                        <option>デパート</option>
+                        <option>アウトレット</option>
+                        <option>ホテル</option>
+                        <option>温泉</option>
+                    </select>
+                    <button>
+                        検索
+                    </button>
+                </div>
+
+                <div class="mapArea">
+                    <div
+                        class="geolonia"
+                        data-geojson="#exe-geojson"
+                    ></div>
+                </div>
             </div>
         <div>
     </header>
@@ -471,12 +508,13 @@
                 </div>
             </div>
 
-            <!-- カスタムマーカー -->
-            <div id="marker2">
-                <img src="./imgs/finger.png" alt="finger" />
-            </div>
             <div class="section">
                 <div class="mapArea">
+
+                    <!-- カスタムマーカー -->
+                    <div id="marker2">
+                        <img src="./imgs/finger.png" alt="finger" />
+                    </div>
                     <div 
                         class="geolonia" 
                         data-lng="127.75362909" 
