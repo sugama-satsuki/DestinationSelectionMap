@@ -1,6 +1,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
 
+:root {
+    --color-darkOrange: #e97b34;
+    --color-orange: #ff9e66;
+    --color-lightOrange: #ffefe6;
+    --color-navy: #000066;
+}
+
+
 
 body {
     padding: 0;
@@ -100,7 +108,6 @@ select {
     background-color: #ffefe6;
     border-radius: 8px;
     color: #e97b34;
-    /* font-weight: bold; */
     font-size: 1rem;
     margin-right: 0.5rem;
     height: 40px;
@@ -149,6 +156,21 @@ main > .content__inner {
   width: 100%;
   height: 400px;
 }
+
+.mapStyleSelect {
+    pointer-events: auto;
+    margin: 8px;
+    z-index: 100;
+}
+.mapStyleSelect > select {
+    font-size: 0.9rem !important;
+    padding: 0.25rem !important;
+    height: 32px !important;
+    border-color: #8a8a99 !important;
+    color: #5c5c66 !important;
+    background-color: #efefef !important;
+}
+
 
 
 /* ------ id ------ */
