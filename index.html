@@ -12,7 +12,13 @@
             "features": [
               {
                 "type": "Feature",
-                "properties": {},
+                "properties": {
+                  "title": "ここどこ？",
+                  "description": "ここはどこでしょうか。",
+                  "marker-color": "#e97b34",
+                  "stroke": "#ffefe6",
+                  "stroke-width": 2
+                },
                 "geometry": {
                   "coordinates": [
                     127.6865938413419,
@@ -67,7 +73,9 @@
               },
               {
                 "type": "Feature",
-                "properties": {},
+                "properties": {
+                  "marker-symbol": "car"
+                },
                 "geometry": {
                   "coordinates": [
                     127.71355732500155,
@@ -89,7 +97,14 @@
               },
               {
                 "type": "Feature",
-                "properties": {},
+                "properties": {
+                  "title": "⚫︎⚫︎があるエリア",
+                  "description": "この辺にたくさん⚫︎⚫︎があるよ！",
+                  "fill": "#ffefe6",
+                  "stroke-width": 5,
+                  "stroke": "#e97b34",
+                  "fill-opacity": 0.4
+                },
                 "geometry": {
                   "coordinates": [
                     [
@@ -457,8 +472,10 @@
 
                 <div class="mapArea">
                     <div
+                        data-cluster-color="#66cdaa"
                         class="geolonia"
                         data-geojson="#exe-geojson"
+                        data-lang="en"
                     ></div>
                 </div>
             </div>
@@ -466,5 +483,14 @@
     </header>
     
     <script type="text/javascript" src="https://cdn.geolonia.com/dev/embed?geolonia-api-key=9cfbb91736564de2a2e1a5faae05ff78"></script>
+    <script type="text/javascript" src="./script/drowMap.js">
+        // const map = new geolonia.Map( '.geolonia' )
+
+        // map.on('load', () => {
+        //   setInterval( () => {
+        //     map.rotateTo( map.getBearing() + 90 )
+        //   }, 3000 )
+        // })
+    </script>
 </body>
 </html>
