@@ -1,7 +1,146 @@
 
-// mapインスタンスの生成
-const map = new geolonia.Map('.geolonia');
 
+// --------------------
+// 定数定義
+// --------------------
+
+// 初期lngとlat
+const center = [ 127.68515584340423, 26.176227738385577 ];
+
+// --------------------
+// mapインスタンスの生成、GeoJsonの取得
+// --------------------
+const map = new geolonia.Map({
+    container: '.geolonia',
+    center: center,
+    zoom: 16
+});
+
+map.on('load', async () => {
+    const resp = await fetch('https://raw.githubusercontent.com/geolonia/prefecture-tiles/master/prefectures.geojson');
+    const geojson = await resp.json;
+
+    console.log(geojson)
+    // 表示非表示が切り替えられるよう、都道府県コードをidにセット
+    const prefectures = geojson.features.map(pref => {
+        return {
+            ...pref, ...{id: pref.properties.code}
+        }
+    });
+
+    // 取得したGeoJSON（全都道府県のポリゴンデータが入っている）データをマップに追加
+    map.addLayer({
+        id: 'prefectures',
+        type: 'fill',
+        source: {
+            type: 'geojson',
+            data: {
+                "type": "FeatureCollection",
+                "features": prefectures
+            }
+        },
+        layout: {},
+        paint: {
+            'fill-color': '#ff0000',
+            'fill-opacity': [
+                'case', 
+                ['boolean', ['feature-state', 'active'], false], 
+                1, 
+                0
+            ]
+        }
+    })
+
+})
+
+
+
+/// --------------------
+// マーカーの生成、関数定義、紐付け
+// --------------------
+const marker = new geolonia.Marker({
+    draggable: true
+}).setLngLat(center).addTo(map);
+
+// ドラッグ時実行される関数
+function onDragEnd() {
+    const lngLat = marker.getLngLat();
+    alert(`緯度： ${lngLat.lat}, 経度： ${lngLat.lng}`);
+}
+
+marker.on('dragend', onDragEnd);
+
+
+
+
+
+
+
+// -------- クラス ---------
+
+// 都道府県選択コントロール
+class PrefectureSelectBox {
+    constructor(prefectures) {
+        // prefecturesインスタンス格納用
+        this._prefectures = prefectures;
+        // 選択した都道府県コード格納用
+        this._selectPrefectureCode = undefined;
+    }
+
+    onAdd(map) {
+        this._map = map;
+        this._container = document.createElement('div');
+        this._container.className = 'maplibregl-ctrl';
+        this._container.innerHTML = `
+            <select name="prefecture">
+                ${this._prefectures.map(pref => {
+                    return '<option value=' + pref.properties.code + '>' + pref.properties.name + '</option>';
+                })}
+            </select>
+        `
+
+        // 都道府県が選択されたときに呼ばれる
+        this._container.addEventListener("change", (e) => {
+
+            // 前回選択した都道府県があれば、ハイライト表示を無効にする
+            if (this._selectedPrefectureCode) {
+            this._map.setFeatureState(
+                { source: 'prefectures', id: this._selectedPrefectureCode },
+                { active: false }
+            );
+            }
+        
+            // 選択した都道府県のハイライト表示を有効にする
+            this._selectedPrefectureCode = e.target.value
+            this._map.setFeatureState(
+            { source: 'prefectures', id: this._selectedPrefectureCode },
+            { active: true }
+            );
+        
+            // 選択された都道府県をフォーカスする
+            const selectedPrefecture = this._prefectures.find(prefecture => prefecture.properties.code === this._selectedPrefectureCode)
+            const prefectureGeojson = {
+            type: 'FeatureCollection',
+            features: [selectedPrefecture]
+            }
+            this._map.fitBounds(geojsonExtent(prefectureGeojson))
+        })
+
+        return this._container
+    }
+
+    onRemove() {
+        this._container.parentNode.removeChild(this.container)
+        this._map = undefined
+    }
+}
+
+const prefectureSelectBox = new PrefectureSelectBox(prefectures);
+map.addControl(prefectureSelectBox);
+
+
+
+// テーマ切り替えコントロール
 class styleControl {
 
     constructor() {
