@@ -6,6 +6,8 @@
 
 // 初期lngとlat
 const center = [ 127.68515584340423, 26.176227738385577 ];
+const url = 'https://raw.githubusercontent.com/geolonia/prefecture-tiles/master/prefectures.geojson';
+const geojsonExtent = require('geojson-extent');
 
 // --------------------
 // mapインスタンスの生成、GeoJsonの取得
@@ -16,18 +18,28 @@ const map = new geolonia.Map({
     zoom: 16
 });
 
-map.on('load', async () => {
-    const resp = await fetch('https://raw.githubusercontent.com/geolonia/prefecture-tiles/master/prefectures.geojson');
-    const geojson = await resp.json;
 
-    console.log(geojson)
+// jsonデータをフェッチ
+const fetchData = async () => {
+    const res = await fetch(url);
+    const json = await res.json();
+
+    return json;
+}
+
+map.on('load', async () => {
+
+    const geojson = await fetchData();
+
+    console.log(geojson);
+
     // 表示非表示が切り替えられるよう、都道府県コードをidにセット
-    const prefectures = geojson.features.map(pref => {
+    const prefectures = geojson.features.map((pref) => {
         return {
             ...pref, ...{id: pref.properties.code}
         }
     });
-
+    
     // 取得したGeoJSON（全都道府県のポリゴンデータが入っている）データをマップに追加
     map.addLayer({
         id: 'prefectures',
@@ -51,7 +63,9 @@ map.on('load', async () => {
         }
     })
 
-})
+    const prefectureSelectBox = new PrefectureSelectBox(prefectures);
+    map.addControl(prefectureSelectBox);
+});
 
 
 
@@ -73,13 +87,11 @@ marker.on('dragend', onDragEnd);
 
 
 
-
-
-
 // -------- クラス ---------
 
 // 都道府県選択コントロール
 class PrefectureSelectBox {
+    
     constructor(prefectures) {
         // prefecturesインスタンス格納用
         this._prefectures = prefectures;
@@ -104,25 +116,27 @@ class PrefectureSelectBox {
 
             // 前回選択した都道府県があれば、ハイライト表示を無効にする
             if (this._selectedPrefectureCode) {
-            this._map.setFeatureState(
-                { source: 'prefectures', id: this._selectedPrefectureCode },
-                { active: false }
-            );
+                this._map.setFeatureState(
+                    { source: 'prefectures', id: this._selectedPrefectureCode },
+                    { active: false }
+                );
             }
         
             // 選択した都道府県のハイライト表示を有効にする
-            this._selectedPrefectureCode = e.target.value
+            this._selectedPrefectureCode = e.target.value;
             this._map.setFeatureState(
-            { source: 'prefectures', id: this._selectedPrefectureCode },
-            { active: true }
+                { source: 'prefectures', id: this._selectedPrefectureCode },
+                { active: true }
             );
         
             // 選択された都道府県をフォーカスする
-            const selectedPrefecture = this._prefectures.find(prefecture => prefecture.properties.code === this._selectedPrefectureCode)
+            const selectedPrefecture = this._prefectures.find(prefecture => prefecture.properties.code === this._selectedPrefectureCode);
+            console.log(selectedPrefecture)
             const prefectureGeojson = {
-            type: 'FeatureCollection',
-            features: [selectedPrefecture]
+                type: 'FeatureCollection',
+                features: [selectedPrefecture]
             }
+            
             this._map.fitBounds(geojsonExtent(prefectureGeojson))
         })
 
@@ -135,8 +149,8 @@ class PrefectureSelectBox {
     }
 }
 
-const prefectureSelectBox = new PrefectureSelectBox(prefectures);
-map.addControl(prefectureSelectBox);
+// const prefectureSelectBox = new PrefectureSelectBox(prefectures);
+// map.addControl(prefectureSelectBox);
 
 
 
