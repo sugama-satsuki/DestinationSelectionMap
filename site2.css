@@ -11,6 +11,7 @@
     --color-black: #383439;
     --color-beige: #F5EBDC;
     --color-emeraldGreen: #61aaaa;
+    --color-lightBeige: #F9F3EA;
 }
 
 
@@ -163,7 +164,7 @@ main > .content__inner {
     min-width: 200px;
     height: 400px;
     margin: 0;
-    background-color: var(--color-beige);
+    background-color: var(--color-lightBeige);
     border-radius: 3px;
     position: relative;
     box-sizing: border-box;
@@ -181,7 +182,7 @@ main > .content__inner {
 .destinationList .header {
     border-radius: 3px 3px 0 0;
     padding: 8px 16px;
-    background-color: var(--color-beige);
+    background-color: var(--color-lightBeige);
     border-bottom: solid 2px var(--color-black);
     font-weight: bold;
     width: calc(100% - 16px);
@@ -212,6 +213,7 @@ main > .content__inner {
     border-radius: 3px;
     transition: display 0.5s;
     overflow: hidden;
+    padding: 3px;
 }
 .mapArea > .text-contents{
     padding: 2rem 0.8rem;
