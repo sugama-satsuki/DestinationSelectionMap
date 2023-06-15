@@ -1,0 +1,20 @@
+.selectM {
+    border: none;
+    padding: 0.5rem;
+    background-color: #fff;
+    border-radius: 3px;
+    color: #666;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    height: 40px;
+}
+.selectS {
+    border: none;
+    padding: 0.25rem;
+    background-color: #fff;
+    border-radius: 3px;
+    color: #666;
+    font-size: 0.9rem;
+    margin-right: 0.25rem;
+    height: 28px;
+}

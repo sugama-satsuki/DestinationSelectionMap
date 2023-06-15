@@ -1,0 +1,14 @@
+
+.searchArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 1.5rem 0 2rem;
+}
+
+.selectWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}

@@ -1,0 +1,133 @@
+
+
+.content__inner {
+    height: 100%;
+    max-width: 1200px;
+    width: 80%;
+    margin: auto;
+    transition: 1s;
+}
+
+
+.mainContent_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.mainContent_header > .destinationArea{
+    flex-basis: 40%;
+}
+
+.mainContent__header > .destinationArea{
+    flex-basis: 40%;
+}
+
+
+
+.searchArea{ 
+    flex-basis: 50%;
+}
+.searchArea_inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+.searchArea_inner .prefArea,
+.searchArea_inner .cateArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.mapContentWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+} 
+
+.mapArea {
+    width: 60%;
+    min-width: 680px;
+    background-color: var(--color-black);
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    border-radius: 3px;
+    transition: display 0.5s;
+    overflow: hidden;
+    padding: 3px;
+}
+.mapArea .text_contents{
+    box-sizing: border-box;
+    width: 150px;
+    color: #fff;
+}
+
+#geoloniaMap {
+    width: 100%;
+    height: 400px;
+}
+
+
+.title {
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-bottom: var(--color-black) solid 2px;
+}
+
+
+
+.destinationList_wrapper {
+    width: 30%;
+    min-width: 200px;
+    height: 400px;
+    box-sizing: border-box;
+}
+
+.destinationList {
+    list-style: none;
+    padding: 56px 8px 8px;
+    width: 100%;
+    height: calc(100% - 40px - 8px);
+    margin: 0;
+    background-color: var(--color-lightBeige);
+    border-radius: 3px;
+    position: relative;
+    box-sizing: border-box;
+    border: solid #eadfd0 1px;
+}
+.destinationList .destinationList_inner {
+    position: absolute;
+    bottom: 8px;
+    height: calc(100% - 56px);
+    width: calc(100% - 16px);
+    padding: 8px 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: scroll;
+}
+.destinationList .header {
+    border-radius: 3px 3px 0 0;
+    padding: 8px 16px;
+    background-color: var(--color-lightBeige);
+    border-bottom: solid 2px var(--color-black);
+    font-weight: bold;
+    width: calc(100% - 16px);
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    box-sizing: border-box;
+}
+.destinationList > .destinationList_inner > li {
+    background-color: rgba(255, 255,255, 0.8);
+    color: var(--color-black);
+    padding: 8px 16px;
+    border-radius: 2px;
+    margin: 0 auto 8px;
+    width: 90%;
+    display: block;
+    color: var(--color-black);
+    box-sizing: border-box;
+}
