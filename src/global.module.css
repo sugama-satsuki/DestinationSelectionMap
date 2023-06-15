@@ -1,0 +1,74 @@
+
+/* ~~~~~~~~~~ スペース ~~~~~~~~~~ */
+
+/* == margin == */
+.marginTop_none {
+    margin-top: 0;
+}
+.marginTop_s {
+    margin-top: var(--space-s);
+}
+.marginTop_m {
+    margin-top: var(--space-m);
+}
+.marginTop_l {
+    margin-top: var(--space-l);
+}
+.marginTop_xl {
+    margin-top: var(--space-xl);
+}
+.marginBottom_none {
+    margin-bottom: 0;
+}
+.marginBottom_s {
+    margin-bottom: var(--space-s);
+}
+.marginBottom_m {
+    margin-bottom: var(--space-m);
+}
+.marginBottom_l {
+    margin-bottom: var(--space-l);
+}
+.marginBottom_xl {
+    margin-bottom: var(--space-xl);
+}
+
+
+/* == padding == */
+.padding_none {
+    padding: 0;
+}
+
+.paddingTop_xs {
+    padding-top: calc(var(--space-s)/2);
+}
+.paddingBottom_xs {
+    padding-bottom: calc(var(--space-s) / 2);
+}
+
+.paddingLeft_s  {
+    padding-left: var(--space-s);
+}
+.paddingRight_s  {
+    padding-right: var(--space-s);
+}
+
+.paddingLeft_m {
+    padding-left: var(--space-m);
+}
+.paddingRight_m {
+    padding-right: var(--space-m);
+}
+
+.paddingTop_l {
+    padding-top: var(--space-l);
+}
+.paddingBottom_l {
+    padding-bottom: var(--space-l);
+}
+
+
+
+
+/* ~~~~~~~ map ~~~~~~ */
+
