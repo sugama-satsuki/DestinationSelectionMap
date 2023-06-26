@@ -27,7 +27,6 @@ export default function SearchArea(props) {
 
     // 検索ボタンクリック処理
     function onClickSearchButton() {
-        console.log('searchArea: ' + selectPref, selectCate);
         onClickFunc(selectPref, selectCate);
     }
 

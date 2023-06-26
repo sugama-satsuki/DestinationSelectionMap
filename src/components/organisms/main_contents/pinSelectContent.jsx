@@ -4,6 +4,7 @@ import React from "react";
 /* import Map */ 
 import { GeoloniaMap } from "@geolonia/embed-react";
 
+
 /* import css */ 
 import styles from './pinSelectContent.module.css';
 import globalStyle from '../../../global.module.css';
@@ -12,17 +13,33 @@ import globalStyle from '../../../global.module.css';
 import Button from "../../atoms/button";
 import Spacer from "../../atoms/spacer";
 
-/* import data */
+/* import organisms */ 
 import SearchArea from "../searchArea";
+
+/* import data */
+import { getOkinawaMuseum } from '../../../data/getJson';
+
+/* import mui */ 
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 
 
 
 export default function PinSelectContent(props) {
 
-    const { addDestListFunc, planDecisionFunc, itemList, pref, cate } = props;
-
+    const { addDestListFunc, planDecisionFunc, itemList, pref, cate, geoData } = props;
 
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
+
+    const [geoJson, setGeoJson] = React.useState("");
+    
+    React.useEffect(() => {
+
+        setGeoJson(() => {return geoData});
+
+    }, [geoData])
+
 
     // 再検索ボタンクリック処理
     function reSearch() {
@@ -31,15 +48,14 @@ export default function PinSelectContent(props) {
 
     // 決定ボタンクリック処理
     function decision() {
-        console.log('call decision!');
-        addDestListFunc({prefecture: pref, category: cate, facilityName: '施設名'})
+        addDestListFunc({prefecture: pref, category: cate, facilityName: '　施設名'})
     }
 
+    // プラン確定ボタンクリック処理
     function planFixed() {
         console.log("call plan Fixed!");
         planDecisionFunc();
     }
-
 
 
     /* ~~~~~~~~~ return ~~~~~~~~ */ 
@@ -62,10 +78,11 @@ export default function PinSelectContent(props) {
                     <GeoloniaMap 
                         apiKey={"3407afe23e7c46cca1391c93f9f84567"}
                         style={{height: "400px", width: "100%"}}
-                        lat="26.176227738385577"
-                        lng="127.72197852"
+                        geojson={geoJson}
                         zoom="10"
+                        marker="off"
                     />
+                    
                     <div className={`${styles.text_contents} ${globalStyle.paddingRight_s} ${globalStyle.paddingLeft_s} ${globalStyle.paddingTop_l} ${globalStyle.paddingBottom_l}`}>
                         <p>あなたが最もワクワクするピンを選択してください！</p>
                         <Button text="決定" onClickFunc={() => { decision() }} />

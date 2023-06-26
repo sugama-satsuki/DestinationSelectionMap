@@ -1,24 +1,24 @@
 /* eslint-disable no-undef */
 import React from "react";
 
+/* import Map */ 
+import { GeoloniaMap } from "@geolonia/embed-react";
+
 /* import css */ 
 import styles from './planDecisionContent.module.css';
 import globalStyle from '../../../global.module.css';
 
 /* import atoms */ 
 import { BackBtn } from "../../atoms/button";
-import Spacer from "../../atoms/spacer";
 
-/* import data */
-import { prefItems, cateItems } from "../../../data/data" 
-import SelectBox from "../../molecules/selectBox";
-import SearchArea from "../searchArea";
+import data from "./example.geojson";
+
 
 
 
 export default function PlanDecisionContent(props) {
 
-    const { addDestListFunc, planDecisionFunc, destinationItems } = props;
+    const { addDestListFunc, planDecisionFunc, destinationItems, backFunc } = props;
 
 
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
@@ -39,8 +39,6 @@ export default function PlanDecisionContent(props) {
         addDestListFunc({prefecture: pref, category: cate, facilityName: '施設名'})
     }
 
-    console.log("destinationItems: ", destinationItems, "!!")
-
 
 
     /* ~~~~~~~~~ return ~~~~~~~~ */ 
@@ -49,7 +47,7 @@ export default function PlanDecisionContent(props) {
         <div className={`${styles.content__inner} ${styles.destinationFixed} ${globalStyle.content_fadeIn}`}>
             <div className={styles.mainContent_header}>
                 <div className={styles.destinationArea}>
-                    <BackBtn text="行き先を選ぶ" onclick={() => {}} />
+                    <BackBtn text="行き先を選ぶ" onclick={backFunc} />
                     <p className={`${styles.title} ${globalStyle.paddingLeft_m} ${globalStyle.paddingBottom_xs}`}>最高の旅にしましょう♪</p>
                     <p className={`${styles.destination} ${globalStyle.paddingLeft_m}`}>最短経路を表示しています。</p>
                 </div>
@@ -59,10 +57,17 @@ export default function PlanDecisionContent(props) {
                 <div></div>
             </div>
             <div className={`${styles.wideMap} ${styles.mapArea}`}>
-                <div
+                {/* <div
                     id={styles.geoloniaWideMap}
                     data-lang="en"
-                ></div>
+                ></div> */}
+                <GeoloniaMap 
+                    apiKey={"3407afe23e7c46cca1391c93f9f84567"}
+                    style={{height: "506px", width: "100%"}}
+                    geojson={data}
+                    zoom="10"
+                    marker="off"
+                />
                 <div className={`${styles.text_contents} ${globalStyle.padding_none} ${globalStyle.bgWhite}`}>
                     <ul className={styles.routeList}>
                         { destinationItems.map((val, index) => {

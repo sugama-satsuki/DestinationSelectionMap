@@ -22,8 +22,6 @@ export default function Header(props) {
     /* ~~~~~~~~ 関数 ~~~~~~~~ */ 
 
     function showMap(prefecture, category) {
-        console.log('call showMap!!');
-        console.log('header: '+prefecture, category);
         searchFunc(prefecture, category);
     }
 
