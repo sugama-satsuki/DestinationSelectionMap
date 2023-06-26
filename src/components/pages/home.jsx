@@ -101,7 +101,11 @@ export default function Home(){
 
     // プラン確定ボタンクリック処理
     function planDecisionFunc() {
-        setContentState(() => {return 3;});
+        if(itemList.length > 0) {
+            setContentState(() => {return 3;});
+        } else {
+            setMsgId("E002");
+        }
     }
 
     // 戻るボタンクリック処理

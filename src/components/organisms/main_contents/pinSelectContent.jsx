@@ -53,7 +53,6 @@ export default function PinSelectContent(props) {
 
     // プラン確定ボタンクリック処理
     function planFixed() {
-        console.log("call plan Fixed!");
         planDecisionFunc();
     }
 
