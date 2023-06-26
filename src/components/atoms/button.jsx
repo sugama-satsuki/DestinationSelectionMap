@@ -9,7 +9,6 @@ export default function Button(props) {
     const {full, onClickFunc, type, green, text} = props;
 
     function func() {
-        console.log('call button func');
         onClickFunc();
     }
 

@@ -1,0 +1,26 @@
+
+.msgBnr.hide {
+    top: -100px;
+    transition: top 0.5s;
+}
+
+div.msgBnr {
+    position: fixed;
+    top: 16px;
+    left: calc((100% - 350px) / 2);
+    width: 350px;
+    display: block;
+    padding: 16px 20px;
+    z-index: 20;
+    background-color: var(--color-deepGreen);
+    color: var(--color-white);
+    font-size: 1.1rem;
+    border-radius: 4px;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    box-sizing: border-box;
+    transition: top 0.5s;
+}
+
+.errMsg {
+    background-color: var(--color-darkOrange) !important;
+}

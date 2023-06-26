@@ -1,0 +1,123 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.80205978897288,
+            26.3028493194375
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.77738500193027,
+            26.288590971390548
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.78057893438199,
+            26.274730325045198
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.74748979418388,
+            26.286300069698896
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.73816351142483,
+            26.280687169345313
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.73254219031065,
+            26.266367316184244
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            127.78478466413281,
+            26.32294335358229
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            [
+              127.7559217758565,
+              26.31630729496446
+            ],
+            [
+              127.78505043981602,
+              26.32294906552596
+            ],
+            [
+              127.80178664586185,
+              26.30267902186914
+            ],
+            [
+              127.77764051652667,
+              26.288590971390548
+            ],
+            [
+              127.77994014789215,
+              26.275073997450875
+            ],
+            [
+              127.74723427958736,
+              26.28584188393114
+            ],
+            [
+              127.7380357541279,
+              26.28045806560327
+            ],
+            [
+              127.73241443301112,
+              26.266138184174025
+            ]
+          ],
+          "type": "LineString"
+        }
+      }
+    ]
+  }

@@ -3,6 +3,9 @@ import React from 'react';
 /* import css */
 import styles from './home.module.css'; 
 
+/* import atoms */ 
+import MsgBnr from '../atoms/msgBnr';
+
 /* import organisms */ 
 import Header from '../organisms/header';
 import PinSelectContent from '../organisms/main_contents/pinSelectContent';
@@ -10,6 +13,7 @@ import PinSelectContent from '../organisms/main_contents/pinSelectContent';
 /* import data */
 import { prefItems, cateItems } from '../../data/data'; 
 import PlanDecisionContent from '../organisms/main_contents/planDecisionContent';
+import { CircularProgress } from '@mui/material';
 
 
 
@@ -23,29 +27,68 @@ export default function Home(){
     // {prefecture: string, category: string, facilityName: string}[]
     const [itemList, setItemList] = React.useState([]);
 
+    const [msgId, setMsgId] = React.useState("");
+
     const [selectPref, setSelectPref] = React.useState('');
     const [selectCate, setSelectCate] = React.useState('');
 
     const [showData, setShowData] = React.useState({pref: "", cate: ""});
 
 
+    const [geoJson, setGeoJson] = React.useState("");
+    const [loading, setLoading] = React.useState(true);
+
+    // TODO: フラグの切り替え、減らす増やすなどのstate操作はuseCallback使ってアロー関数定義。
+
+
+
     /* ~~~~~~~~~ 関数 ~~~~~~~~~~ */ 
 
-    function searchFunc(prefecture, category) {
+    React.useEffect(() => {
+        console.log("call useEffect!: ", geoJson)
+        if(geoJson !== "") {
+            setLoading(() => { return false })
+        }
+    }, [geoJson])
+
+
+    const fetchData = async() => {
+        return fetch("http://localhost:9000/api/okinawaMuseumData").then(res => {
+            const data = res.json();
+            console.log("res: ", data, typeof(data))
+            setGeoJson(() => {return data});
+            return data;
+        });
+    }
+
+
+    async function searchFunc(prefecture, category) {
         setSelectPref(prefecture);
         setSelectCate(category);
-        setShowData(
-            () => { return ({
-                pref: prefItems.filter(el => el.val === prefecture)[0].text, 
-                cate: cateItems.filter(el => el.val === category)[0].text
-            })}
-        );
         setContentState(() => {return 2;});
+
+        if(!prefecture && !category) {
+            setMsgId("E001");
+            return
+        }
+
+        setShowData(
+            () => { 
+                return ({
+                    pref: prefItems.filter(el => el.val === prefecture)[0].text, 
+                    cate: cateItems.filter(el => el.val === category)[0].text
+                })
+            }
+        );
+
+        let geoData = await fetchData();
+        console.log(geoJson);
+        setGeoJson(() => { return geoData});
+        console.log('call searchFunc!', loading, geoJson)
     }
     
     // 決定ボタンクリック処理
     function addDestListFunc(item) {
-        console.log('call addDestListFunc');
         // 行きたいところリストの更新
         setItemList([...itemList, item]);
     }
@@ -55,17 +98,35 @@ export default function Home(){
         setContentState(() => {return 3;});
     }
 
+    // 戻るボタンクリック処理
+    function backFunc() {
+        setContentState(() => {return 2})
+    }
+
     /* ~~~~~~~~~ return ~~~~~~~~~~ */ 
 
     return(
         <>
+            <MsgBnr msgId={msgId} closeFunc={setMsgId} />
             <Header searchFunc={searchFunc}/>
             <main className={`${styles.mainContent} ${styles.hidden}`}>
-                { contentState === 2 && 
-                    <PinSelectContent itemList={itemList} addDestListFunc={addDestListFunc} pref={showData.pref} cate={showData.cate} planDecisionFunc={planDecisionFunc}/>
+                { contentState === 1 && <></> }
+                { contentState === 2 ? 
+                    loading ? 
+                        <div className={styles.loadingWrapper}><CircularProgress /></div>
+                        :<PinSelectContent 
+                            itemList={itemList} 
+                            addDestListFunc={addDestListFunc} 
+                            pref={showData.pref} 
+                            cate={showData.cate} 
+                            planDecisionFunc={planDecisionFunc} 
+                            geoData={geoJson}
+                        />
+                    :
+                    <></>
                 }
                 { contentState === 3 && 
-                    <PlanDecisionContent destinationItems={itemList}/>
+                    <PlanDecisionContent destinationItems={itemList} backFunc={backFunc} />
                 }
             </main>
         </>

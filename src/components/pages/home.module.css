@@ -3,3 +3,9 @@
     min-height: 400px;
     box-sizing: border-box;
 }
+
+.loadingWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
