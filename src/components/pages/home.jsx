@@ -14,6 +14,7 @@ import PinSelectContent from '../organisms/main_contents/pinSelectContent';
 import { prefItems, cateItems } from '../../data/data'; 
 import PlanDecisionContent from '../organisms/main_contents/planDecisionContent';
 import { CircularProgress } from '@mui/material';
+import { getTakamatsuCarParking } from '../../data/getJson';
 
 
 
@@ -47,18 +48,13 @@ export default function Home(){
     React.useEffect(() => {
         console.log("call useEffect!: ", geoJson)
         if(geoJson !== "") {
-            setLoading(() => { return false })
+            setLoading(() => { return false });
         }
     }, [geoJson])
 
 
     const fetchData = async() => {
-        return fetch("http://localhost:9000/api/okinawaMuseumData").then(res => {
-            const data = res.json();
-            console.log("res: ", data, typeof(data))
-            setGeoJson(() => {return data});
-            return data;
-        });
+        return getTakamatsuCarParking();
     }
 
 
@@ -89,8 +85,18 @@ export default function Home(){
     
     // 決定ボタンクリック処理
     function addDestListFunc(item) {
+        const index = itemList.length === 0 ? 0 : itemList[itemList.length - 1].id;
+        item.id = index + 1;
+        console.log(item);
         // 行きたいところリストの更新
         setItemList([...itemList, item]);
+    }
+
+    // ×ボタンクリック処理
+    function delDestListFunc(id) {
+        const updateItemList = itemList.filter(item => item.id !== id);
+        // 行きたいところリストの更新
+        setItemList([...updateItemList]);
     }
 
     // プラン確定ボタンクリック処理
@@ -121,6 +127,7 @@ export default function Home(){
                             cate={showData.cate} 
                             planDecisionFunc={planDecisionFunc} 
                             geoData={geoJson}
+                            delDestListFunc={delDestListFunc} 
                         />
                     :
                     <></>

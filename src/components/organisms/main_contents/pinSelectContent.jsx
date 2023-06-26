@@ -20,7 +20,7 @@ import SearchArea from "../searchArea";
 import { getOkinawaMuseum } from '../../../data/getJson';
 
 /* import mui */ 
-import CircularProgress from '@mui/material/CircularProgress';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 
@@ -28,7 +28,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 export default function PinSelectContent(props) {
 
-    const { addDestListFunc, planDecisionFunc, itemList, pref, cate, geoData } = props;
+    const { addDestListFunc, delDestListFunc, planDecisionFunc, itemList, pref, cate, geoData } = props;
 
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
 
@@ -48,13 +48,19 @@ export default function PinSelectContent(props) {
 
     // 決定ボタンクリック処理
     function decision() {
-        addDestListFunc({prefecture: pref, category: cate, facilityName: '　施設名'})
+        addDestListFunc({prefecture: pref, category: cate, facilityName: '施設名'})
     }
 
     // プラン確定ボタンクリック処理
     function planFixed() {
         console.log("call plan Fixed!");
         planDecisionFunc();
+    }
+
+    // 行きたいところ削除
+    function delPlace(id) {
+        console.log(id);
+        delDestListFunc(id);
     }
 
 
@@ -81,6 +87,7 @@ export default function PinSelectContent(props) {
                         geojson={geoJson}
                         zoom="10"
                         marker="off"
+                        id="geoloniaMaps"
                     />
                     
                     <div className={`${styles.text_contents} ${globalStyle.paddingRight_s} ${globalStyle.paddingLeft_s} ${globalStyle.paddingTop_l} ${globalStyle.paddingBottom_l}`}>
@@ -96,7 +103,10 @@ export default function PinSelectContent(props) {
                             { itemList !== [] &&
                                 itemList.map((val, index) => {
                                     return (
-                                        <li key={"destinationList_li"+index}>{val.prefecture + ':' + val.category + '\b\b' + val.facilityName}</li>
+                                        <li key={"destinationList_li"+index}>
+                                            {val.prefecture + ':' + val.category + '\b\b' + val.facilityName}
+                                            <span onClick={() => delPlace(val.id)}><CloseRoundedIcon /></span>
+                                        </li>
                                     )
                                 }) 
                             }

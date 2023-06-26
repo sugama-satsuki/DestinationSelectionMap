@@ -8,6 +8,15 @@ export async function getOkinawaMuseum() {
 
 }
 
+export const getTakamatsuCarParking = async() => {
+
+    const endpoint = 'https://geolonia.github.io/style-demo-source/takamatsu-car-parking.json';
+    const res = await fetch(endpoint);
+    const data = await res.json();
+
+    return data;
+}
+
 
 export const getPrefecture = async() => {
     const endpoint = 'https://geolonia.github.io/japanese-prefectural-capitals/index.json';
