@@ -118,7 +118,7 @@ export default function Home(){
     return(
         <>
             <MsgBnr msgId={msgId} closeFunc={setMsgId} />
-            <Header searchFunc={searchFunc}/>
+            <Header searchFunc={searchFunc} searchBarHide={contentState !== 1}/>
             <main className={`${styles.mainContent} ${styles.hidden}`}>
                 { contentState === 1 && <></> }
                 { contentState === 2 ? 
@@ -132,6 +132,7 @@ export default function Home(){
                             planDecisionFunc={planDecisionFunc} 
                             geoData={geoJson}
                             delDestListFunc={delDestListFunc} 
+                            searchFunc={searchFunc}
                         />
                     :
                     <></>

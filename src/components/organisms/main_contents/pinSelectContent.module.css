@@ -132,10 +132,14 @@
     box-sizing: border-box;
     position: relative;
 }
-.destinationList > .destinationList_inner > li span {
+.destinationList > .destinationList_inner > li .icon {
     position: absolute;
     right: var(--space-s);
     height: 24px;
     width: 24px;
     top: var(--space-s);
+}
+
+.facility {
+    margin-left: var(--space-s);
 }

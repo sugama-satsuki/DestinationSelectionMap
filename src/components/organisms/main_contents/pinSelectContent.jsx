@@ -28,7 +28,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 export default function PinSelectContent(props) {
 
-    const { addDestListFunc, delDestListFunc, planDecisionFunc, itemList, pref, cate, geoData } = props;
+    const { addDestListFunc, delDestListFunc, planDecisionFunc, itemList, pref, cate, geoData, searchFunc } = props;
 
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
 
@@ -44,6 +44,7 @@ export default function PinSelectContent(props) {
     // 再検索ボタンクリック処理
     function reSearch() {
         console.log('call reSearch!!');
+        searchFunc();
     }
 
     // 決定ボタンクリック処理
@@ -61,6 +62,14 @@ export default function PinSelectContent(props) {
         console.log(id);
         delDestListFunc(id);
     }
+
+    // const handleOnAfterLoad = React.useCallback(async (map) => {
+    //     map.addControl(new fullscreen('.gis-panel .editor'), 'top-right');
+    //     // @ts-ignore
+    //     map.addControl(new window.geolonia.NavigationControl());
+    
+    //     mapRef.current = map;
+    //   }, []);
 
 
     /* ~~~~~~~~~ return ~~~~~~~~ */ 
@@ -103,8 +112,9 @@ export default function PinSelectContent(props) {
                                 itemList.map((val, index) => {
                                     return (
                                         <li key={"destinationList_li"+index}>
-                                            {val.prefecture + ':' + val.category + '\b\b' + val.facilityName}
-                                            <span onClick={() => delPlace(val.id)}><CloseRoundedIcon /></span>
+                                            <span>{ val.prefecture + ':' + val.category }</span>
+                                            <span className={styles.facility}>{ val.facilityName }</span>
+                                            <span onClick={() => delPlace(val.id)} className={styles.icon}><CloseRoundedIcon /></span>
                                         </li>
                                     )
                                 }) 

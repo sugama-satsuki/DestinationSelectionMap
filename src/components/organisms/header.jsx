@@ -12,7 +12,7 @@ import SearchArea from './searchArea';
 export default function Header(props) {
 
 
-    const {searchFunc} = props;
+    const {searchFunc, searchBarHide} = props;
 
     /* ~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
 
@@ -36,12 +36,12 @@ export default function Header(props) {
                 <div className={styles.header__content}>
                     <h1>Search for <br/>a beautiful holiday.</h1>
                     <p>素敵な国内旅行の計画を練りましょう！</p>
-                    <div className={styles.header__innerContent}>
+                    <div className={`${styles.header__innerContent} ${searchBarHide && styles.hide}`}>
                         <SearchArea onClickFunc={showMap}/>
                     </div>
                 </div>
             </div>
-            <img src="../imgs/travel.png" className={styles.header_img} alt="header-img"/>
+            <img src="../imgs/travel.png" className={`${styles.header_img} ${searchBarHide && styles.small_img}`} alt="header-img"/>
         </header>
     )
 }
