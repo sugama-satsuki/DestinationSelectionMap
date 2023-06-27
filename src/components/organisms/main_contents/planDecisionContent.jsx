@@ -40,7 +40,6 @@ export default function PlanDecisionContent(props) {
     }
 
 
-
     /* ~~~~~~~~~ return ~~~~~~~~ */ 
 
     return (
@@ -57,10 +56,6 @@ export default function PlanDecisionContent(props) {
                 <div></div>
             </div>
             <div className={`${styles.wideMap} ${styles.mapArea}`}>
-                {/* <div
-                    id={styles.geoloniaWideMap}
-                    data-lang="en"
-                ></div> */}
                 <GeoloniaMap 
                     apiKey={"3407afe23e7c46cca1391c93f9f84567"}
                     style={{height: "506px", width: "100%"}}

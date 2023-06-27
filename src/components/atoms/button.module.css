@@ -49,13 +49,15 @@ a.back::before {
     content: "<";
     position: absolute;
     left: 4px;
-    bottom: -2px;
+    bottom: -3px;
     line-height: 1;
     background-color: var(--color-emeraldGreen);
     padding: 4px var(--space-s);
     border-radius: 100px;
     box-sizing: border-box;
     color: var(--color-white);
+    width: 24px;
+    height: 24px;
 }
 a.back:hover {
     transition: opacity 0.5s;

@@ -72,3 +72,14 @@ h1{
     right: 180px;
     width: 240px;
 }
+
+.hide {
+    display: none;
+    transition: 0.5s;
+}
+
+.small_img {
+    top: 155px;
+    right: 190px;
+    width: 250px;
+}
