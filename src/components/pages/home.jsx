@@ -46,10 +46,12 @@ export default function Home(){
     /* ~~~~~~~~~ 関数 ~~~~~~~~~~ */ 
 
     React.useEffect(() => {
-        console.log("call useEffect!: ", geoJson)
+
         if(geoJson !== "") {
             setLoading(() => { return false });
+            console.log('call useEffect!', loading, geoJson);
         }
+
     }, [geoJson])
 
 
@@ -58,6 +60,7 @@ export default function Home(){
     }
 
 
+    // 検索ボタンクリック処理
     async function searchFunc(prefecture, category) {
         setSelectPref(prefecture);
         setSelectCate(category);
@@ -78,9 +81,8 @@ export default function Home(){
         );
 
         let geoData = await fetchData();
-        console.log(geoJson);
+        console.log(typeof geoData, geoData)
         setGeoJson(() => { return geoData});
-        console.log('call searchFunc!', loading, geoJson)
     }
     
     // 決定ボタンクリック処理

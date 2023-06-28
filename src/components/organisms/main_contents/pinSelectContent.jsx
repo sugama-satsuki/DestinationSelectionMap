@@ -16,11 +16,12 @@ import Spacer from "../../atoms/spacer";
 /* import organisms */ 
 import SearchArea from "../searchArea";
 
-/* import data */
-import { getOkinawaMuseum } from '../../../data/getJson';
-
 /* import mui */ 
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+
+
+import data from "./example.geojson";
+
 
 
 
@@ -33,13 +34,47 @@ export default function PinSelectContent(props) {
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
 
     const [geoJson, setGeoJson] = React.useState("");
+    const [markerInfo, setMarkerInfo] = React.useState({lng: 0, lat: 0, name: ""});
+    const mapRef = React.useRef(null);
     
     React.useEffect(() => {
-
         setGeoJson(() => {return geoData});
-
     }, [geoData])
 
+
+    // onLoad用　callback関数
+    const handler = React.useCallback(() => {
+        const map = mapRef.current;
+
+        for(let i = 0; i < geoData.features.length; i++) {
+            setMarker(geoData.features[i], map);
+        }
+
+        // クリックした座標の取得
+        map.on('click', function(e) {
+            console.log('click!：', e.lngLat.lng);
+        })
+
+    }, [])
+
+    // マーカーのセット
+    const setMarker = (feature, map) => {
+        // popup
+        const popup = new geolonia.Popup()
+            .setHTML(<a onClick={onClickPopup}>${feature.properties["title"]}</a>);
+
+        // marker
+        const marker = new geolonia.Marker({color: '#F9BF3D'})
+            .setLngLat(feature.geometry.coordinates)
+            .setPopup(popup)
+            .addTo(map);
+
+        marker.getElement().style.cursor = 'pointer';
+    }
+
+    function onClickPopup() {
+        console.log('call onClickPopup!');
+    }
 
     // 再検索ボタンクリック処理
     function reSearch() {
@@ -59,17 +94,8 @@ export default function PinSelectContent(props) {
 
     // 行きたいところ削除
     function delPlace(id) {
-        console.log(id);
         delDestListFunc(id);
     }
-
-    // const handleOnAfterLoad = React.useCallback(async (map) => {
-    //     map.addControl(new fullscreen('.gis-panel .editor'), 'top-right');
-    //     // @ts-ignore
-    //     map.addControl(new window.geolonia.NavigationControl());
-    
-    //     mapRef.current = map;
-    //   }, []);
 
 
     /* ~~~~~~~~~ return ~~~~~~~~ */ 
@@ -92,10 +118,12 @@ export default function PinSelectContent(props) {
                     <GeoloniaMap 
                         apiKey={"3407afe23e7c46cca1391c93f9f84567"}
                         style={{height: "400px", width: "100%"}}
-                        geojson={geoJson}
-                        zoom="10"
+                        lat="34.33717"
+                        lng="134.04979"
+                        zoom="13"
                         marker="off"
-                        id="geoloniaMaps"
+                        mapRef={mapRef}
+                        onLoad={handler}
                     />
                     
                     <div className={`${styles.text_contents} ${globalStyle.paddingRight_s} ${globalStyle.paddingLeft_s} ${globalStyle.paddingTop_l} ${globalStyle.paddingBottom_l}`}>
