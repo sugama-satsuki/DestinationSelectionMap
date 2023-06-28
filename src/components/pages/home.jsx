@@ -14,7 +14,7 @@ import PinSelectContent from '../organisms/main_contents/pinSelectContent';
 import { prefItems, cateItems } from '../../data/data'; 
 import PlanDecisionContent from '../organisms/main_contents/planDecisionContent';
 import { CircularProgress } from '@mui/material';
-import { getTakamatsuCarParking } from '../../data/getJson';
+import { getTakamatsuCarParking, getOkinawaMuseum } from '../../data/getJson';
 
 
 
@@ -56,7 +56,7 @@ export default function Home(){
 
 
     const fetchData = async() => {
-        return getTakamatsuCarParking();
+        return getOkinawaMuseum();
     }
 
 

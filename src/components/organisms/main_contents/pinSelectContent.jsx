@@ -24,9 +24,6 @@ import data from "./example.geojson";
 
 
 
-
-
-
 export default function PinSelectContent(props) {
 
     const { addDestListFunc, delDestListFunc, planDecisionFunc, itemList, pref, cate, geoData, searchFunc } = props;
@@ -35,6 +32,7 @@ export default function PinSelectContent(props) {
 
     const [geoJson, setGeoJson] = React.useState("");
     const [markerInfo, setMarkerInfo] = React.useState({lng: 0, lat: 0, name: ""});
+    const [center, setCenter] = React.useState({lng:127.96911949041572, lat:26.588972870618022});
     const mapRef = React.useRef(null);
     
     React.useEffect(() => {
@@ -46,35 +44,57 @@ export default function PinSelectContent(props) {
     const handler = React.useCallback(() => {
         const map = mapRef.current;
 
-        for(let i = 0; i < geoData.features.length; i++) {
-            setMarker(geoData.features[i], map);
+        for(let i = 0; i < geoData.elements.length; i++) {
+            setMarker(geoData.elements[i], map);
         }
 
         // クリックした座標の取得
         map.on('click', function(e) {
-            console.log('click!：', e.lngLat.lng);
+            
+            const lng = Math.floor(e.lngLat.lng * 10)/10;
+            const lat = Math.floor(e.lngLat.lat * 10)/10;
+
+            for(let i = 0; i < geoData.elements.length; i++) {
+
+                const eLng = Math.floor(geoData.elements[i].lon * 10) / 10;
+                const eLat = Math.floor(geoData.elements[i].lat * 10) / 10;
+
+                // 
+                if(lng === eLng) {
+                    setMarkerInfo({lng: geoData.elements[i].lon, lat: geoData.elements[i].lat, name: geoData.elements[i].tags.name});
+                    console.log("click to pin!!:", eLng, eLat)
+                }
+            }
+
         })
 
     }, [])
 
+
+    
+
     // マーカーのセット
-    const setMarker = (feature, map) => {
-        // popup
-        const popup = new geolonia.Popup()
-            .setHTML(<a onClick={onClickPopup}>${feature.properties["title"]}</a>);
+    const setMarker = (e, map) => {
 
-        // marker
-        const marker = new geolonia.Marker({color: '#F9BF3D'})
-            .setLngLat(feature.geometry.coordinates)
-            .setPopup(popup)
-            .addTo(map);
+        console.log(typeof e);
+        console.log(e, "tags" in e);
+        // tag要素があり、
+        if("tags" in e && e["type"] === "node"){
+            // popup
+            const popup = new geolonia.Popup()
+                .setText(e["tags"]["name"]);
 
-        marker.getElement().style.cursor = 'pointer';
+            // marker
+            const marker = new geolonia.Marker({color: '#F9BF3D'})
+                .setLngLat([e.lon, e.lat])
+                .setPopup(popup)
+                .addTo(map);
+
+            marker.getElement().style.cursor = 'pointer';
+        }
     }
 
-    function onClickPopup() {
-        console.log('call onClickPopup!');
-    }
+
 
     // 再検索ボタンクリック処理
     function reSearch() {
@@ -82,15 +102,20 @@ export default function PinSelectContent(props) {
         searchFunc();
     }
 
+
     // 決定ボタンクリック処理
     function decision() {
-        addDestListFunc({prefecture: pref, category: cate, facilityName: '施設名'})
+        if(markerInfo.lng !== "" && markerInfo.lat !== "" && markerInfo.name !== ""){
+            addDestListFunc({prefecture: pref, category: cate, facilityName: markerInfo.name, lat: markerInfo.lat, lng: markerInfo.lng})
+        }
     }
 
+    
     // プラン確定ボタンクリック処理
     function planFixed() {
         planDecisionFunc();
     }
+
 
     // 行きたいところ削除
     function delPlace(id) {
@@ -118,9 +143,9 @@ export default function PinSelectContent(props) {
                     <GeoloniaMap 
                         apiKey={"3407afe23e7c46cca1391c93f9f84567"}
                         style={{height: "400px", width: "100%"}}
-                        lat="34.33717"
-                        lng="134.04979"
-                        zoom="13"
+                        lat={center.lat}
+                        lng={center.lng}
+                        zoom="6"
                         marker="off"
                         mapRef={mapRef}
                         onLoad={handler}
