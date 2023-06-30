@@ -14,15 +14,7 @@ export const prefItems = [
 ]
 
 export const cateItems = [
-    {val: 'ArtMuseum', text: '美術館'},
-    {val: 'OldCityscape', text: '古い街並み'},
-    {val: 'SeaRiver', text: '海/川'},
-    {val: 'Mountain', text: '山'},
-    {val: 'PowerSpot', text: 'パワースポット'},
-    {val: 'TempleShrine', text: 'お寺/神社'},
-    {val: 'DepartmentStore', text: 'デパート'},
-    {val: 'outlet', text: 'アウトレット'},
-    {val: 'Hotel', text: 'ホテル'},
-    {val: 'hotSpring', text: '温泉'},
+    {val: 'museum', text: '美術館'},
+    {val: 'hotel', text: 'ホテル'},
 ]
 

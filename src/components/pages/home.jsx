@@ -39,7 +39,10 @@ export default function Home(){
     const [geoJson, setGeoJson] = React.useState("");
     const [loading, setLoading] = React.useState(true);
 
-    // TODO: フラグの切り替え、減らす増やすなどのstate操作はuseCallback使ってアロー関数定義。
+    const [planDecisionGeoJson, setPlanDecisionGeoJson] = React.useState({
+        "type": "FeatureCollection",
+        "features": []
+    });
 
 
 
@@ -49,14 +52,13 @@ export default function Home(){
 
         if(geoJson !== "") {
             setLoading(() => { return false });
-            console.log('call useEffect!', loading, geoJson);
         }
 
     }, [geoJson])
 
 
-    const fetchData = async() => {
-        return getOkinawaMuseum();
+    const fetchData = async(pref, cate) => {
+        return getOkinawaMuseum(pref, cate);
     }
 
 
@@ -66,22 +68,25 @@ export default function Home(){
         setSelectCate(category);
         setContentState(() => {return 2;});
 
-        if(!prefecture && !category) {
+        if(!prefecture || !category) {
             setMsgId("E001");
             return
         }
 
+        const pref = {text: prefItems.filter(el => el.val === prefecture)[0].text, val: prefItems.filter(el => el.val === prefecture)[0].val};
+        const cate = {text: cateItems.filter(el => el.val === category)[0].text, val: cateItems.filter(el => el.val === category)[0].val}
+
         setShowData(
             () => { 
                 return ({
-                    pref: prefItems.filter(el => el.val === prefecture)[0].text, 
-                    cate: cateItems.filter(el => el.val === category)[0].text
+                    pref: pref, 
+                    cate: cate
                 })
             }
         );
 
-        let geoData = await fetchData();
-        console.log(typeof geoData, geoData)
+        let geoData = await fetchData(pref.val, cate.val);
+        
         setGeoJson(() => { return geoData});
     }
     
@@ -89,7 +94,6 @@ export default function Home(){
     function addDestListFunc(item) {
         const index = itemList.length === 0 ? 0 : itemList[itemList.length - 1].id;
         item.id = index + 1;
-        console.log(item);
         // 行きたいところリストの更新
         setItemList([...itemList, item]);
     }
@@ -104,6 +108,33 @@ export default function Home(){
     // プラン確定ボタンクリック処理
     function planDecisionFunc() {
         if(itemList.length > 0) {
+
+            let pointList = [];
+
+            // TODO: GeoJson型のデータを作成
+            itemList.forEach((val) => {
+                pointList.push({
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "coordinates": [
+                            val.lng, 
+                            val.lat
+                        ],
+                        "type": "Point"
+                    }
+                })
+            })
+            console.log('pointList: ', pointList)
+            setPlanDecisionGeoJson(
+                {
+                    "type": "FeatureCollection",
+                    "features": [
+                        ...pointList
+                    ]
+                }
+            )
+            console.log(planDecisionGeoJson)
             setContentState(() => {return 3;});
         } else {
             setMsgId("E002");
@@ -129,8 +160,8 @@ export default function Home(){
                         :<PinSelectContent 
                             itemList={itemList} 
                             addDestListFunc={addDestListFunc} 
-                            pref={showData.pref} 
-                            cate={showData.cate} 
+                            pref={showData.pref.text} 
+                            cate={showData.cate.text} 
                             planDecisionFunc={planDecisionFunc} 
                             geoData={geoJson}
                             delDestListFunc={delDestListFunc} 
@@ -140,7 +171,7 @@ export default function Home(){
                     <></>
                 }
                 { contentState === 3 && 
-                    <PlanDecisionContent destinationItems={itemList} backFunc={backFunc} />
+                    <PlanDecisionContent destinationItems={planDecisionGeoJson} backFunc={backFunc} />
                 }
             </main>
         </>

@@ -21,6 +21,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 
 import data from "./example.geojson";
+import StyleSelector from "../../atoms/styleSelector/styleSelector";
 
 
 
@@ -33,7 +34,24 @@ export default function PinSelectContent(props) {
     const [geoJson, setGeoJson] = React.useState("");
     const [markerInfo, setMarkerInfo] = React.useState({lng: 0, lat: 0, name: ""});
     const [center, setCenter] = React.useState({lng:127.96911949041572, lat:26.588972870618022});
+    const [styleIdentifier, setStyleIdentifier] = React.useState('geolonia/basic');
     const mapRef = React.useRef(null);
+
+    const styleSelectorStyle = {
+        margin: '8px',
+        paddingLeft: '8px',
+        paddingRight: '8px',
+        fontSize: '18px',
+        height: '36px',
+        boxSizing: 'border-box',
+        border: '1px solid #cccccc',
+        borderRadius: '0',
+        outline: 'none',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: 9999,
+    };
     
     React.useEffect(() => {
         setGeoJson(() => {return geoData});
@@ -44,29 +62,17 @@ export default function PinSelectContent(props) {
     const handler = React.useCallback(() => {
         const map = mapRef.current;
 
+        // マーカーの生成
         for(let i = 0; i < geoData.elements.length; i++) {
             setMarker(geoData.elements[i], map);
         }
 
-        // クリックした座標の取得
-        map.on('click', function(e) {
-            
-            const lng = Math.floor(e.lngLat.lng * 10)/10;
-            const lat = Math.floor(e.lngLat.lat * 10)/10;
-
-            for(let i = 0; i < geoData.elements.length; i++) {
-
-                const eLng = Math.floor(geoData.elements[i].lon * 10) / 10;
-                const eLat = Math.floor(geoData.elements[i].lat * 10) / 10;
-
-                // 
-                if(lng === eLng) {
-                    setMarkerInfo({lng: geoData.elements[i].lon, lat: geoData.elements[i].lat, name: geoData.elements[i].tags.name});
-                    console.log("click to pin!!:", eLng, eLat)
-                }
-            }
-
-        })
+        // ディレクションを追加
+        // map.addControl(
+        //     new MapboxDirections({
+        //         accessToken: "3407afe23e7c46cca1391c93f9f84567"
+        //     })
+        // )
 
     }, [])
 
@@ -76,10 +82,9 @@ export default function PinSelectContent(props) {
     // マーカーのセット
     const setMarker = (e, map) => {
 
-        console.log(typeof e);
-        console.log(e, "tags" in e);
         // tag要素があり、
         if("tags" in e && e["type"] === "node"){
+
             // popup
             const popup = new geolonia.Popup()
                 .setText(e["tags"]["name"]);
@@ -91,8 +96,14 @@ export default function PinSelectContent(props) {
                 .addTo(map);
 
             marker.getElement().style.cursor = 'pointer';
+
+            // event
+            marker.getElement().addEventListener('click', () => {
+                setMarkerInfo({lng: e.lon, lat: e.lat, name: e.tags.name});
+            }, false);
         }
     }
+
 
 
 
@@ -110,7 +121,7 @@ export default function PinSelectContent(props) {
         }
     }
 
-    
+
     // プラン確定ボタンクリック処理
     function planFixed() {
         planDecisionFunc();
@@ -145,11 +156,13 @@ export default function PinSelectContent(props) {
                         style={{height: "400px", width: "100%"}}
                         lat={center.lat}
                         lng={center.lng}
-                        zoom="6"
+                        zoom="8"
                         marker="off"
                         mapRef={mapRef}
                         onLoad={handler}
+                        mapStyle={styleIdentifier}
                     />
+                    <StyleSelector style={styleSelectorStyle} styleIdentifier={styleIdentifier} setStyleIdentifier={setStyleIdentifier} />
                     
                     <div className={`${styles.text_contents} ${globalStyle.paddingRight_s} ${globalStyle.paddingLeft_s} ${globalStyle.paddingTop_l} ${globalStyle.paddingBottom_l}`}>
                         <p>あなたが最もワクワクするピンを選択してください！</p>
