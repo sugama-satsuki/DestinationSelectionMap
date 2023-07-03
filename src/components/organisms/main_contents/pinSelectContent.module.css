@@ -58,6 +58,7 @@
     transition: display 0.5s;
     overflow: hidden;
     padding: 3px;
+    position: relative;
 }
 .mapArea .text_contents{
     box-sizing: border-box;

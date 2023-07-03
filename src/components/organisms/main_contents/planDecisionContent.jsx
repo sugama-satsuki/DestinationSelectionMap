@@ -23,7 +23,12 @@ export default function PlanDecisionContent(props) {
 
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
 
-    const center = [ 127.68515584340423, 26.176227738385577 ];
+    const [geoJson, setGeoJson] = React.useState({});
+
+    React.useEffect(() => {
+        console.log(destinationItems);
+        setGeoJson(() => { return destinationItems });
+    }, [destinationItems])
 
 
     /* ~~~~~~~~~ 関数 ~~~~~~~~ */ 
@@ -59,13 +64,13 @@ export default function PlanDecisionContent(props) {
                 <GeoloniaMap 
                     apiKey={"3407afe23e7c46cca1391c93f9f84567"}
                     style={{height: "506px", width: "100%"}}
-                    geojson={data}
+                    geojson={geoJson}
                     zoom="10"
                     marker="off"
                 />
                 <div className={`${styles.text_contents} ${globalStyle.padding_none} ${globalStyle.bgWhite}`}>
                     <ul className={styles.routeList}>
-                        { destinationItems.map((val, index) => {
+                        { geoJson["features"] && geoJson["features"].map((val, index) => {
                             return (
                                 <li key={index}>
                                     <span className={styles.sub_title}>{val.prefecture + "：" +  val.category}</span>
