@@ -165,7 +165,7 @@ export default function PinSelectContent(props) {
                     <StyleSelector style={styleSelectorStyle} styleIdentifier={styleIdentifier} setStyleIdentifier={setStyleIdentifier} />
                     
                     <div className={`${styles.text_contents} ${globalStyle.paddingRight_s} ${globalStyle.paddingLeft_s} ${globalStyle.paddingTop_l} ${globalStyle.paddingBottom_l}`}>
-                        <p>あなたが最もワクワクするピンを選択してください！</p>
+                        <p>あなたが最もワクワクするピンを選択してください！！</p>
                         <Button text="決定" onClickFunc={() => { decision() }} />
                     </div>
                 </div>
