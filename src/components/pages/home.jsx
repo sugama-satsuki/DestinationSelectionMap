@@ -37,6 +37,7 @@ export default function Home(){
 
 
     const [geoJson, setGeoJson] = React.useState("");
+    const [prefData, setPrefData] = React.useState("");
     const [loading, setLoading] = React.useState(true);
 
     const [planDecisionGeoJson, setPlanDecisionGeoJson] = React.useState({
@@ -58,7 +59,7 @@ export default function Home(){
 
 
     const fetchData = async(pref, cate) => {
-        return getOkinawaMuseum(pref, cate);
+        return await getOkinawaMuseum(pref, cate);
     }
 
 
@@ -85,9 +86,10 @@ export default function Home(){
             }
         );
 
-        let geoData = await fetchData(pref.val, cate.val);
-        
-        setGeoJson(() => { return geoData});
+        let { data, lngLat } = await fetchData(pref.text, cate.val);
+        lngLat['name'] = pref.text;
+        setGeoJson(() => { return data });
+        setPrefData(() => { return lngLat });
     }
     
     // 決定ボタンクリック処理
@@ -111,11 +113,15 @@ export default function Home(){
 
             let pointList = [];
 
-            // TODO: GeoJson型のデータを作成
+            // Featureデータの作成
             itemList.forEach((val) => {
                 pointList.push({
                     "type": "Feature",
-                    "properties": {},
+                    "properties": {
+                        "prefecture": val.prefecture,
+                        "category": val.category,
+                        "facilityName": val.facilityName
+                    },
                     "geometry": {
                         "coordinates": [
                             val.lng, 
@@ -125,7 +131,7 @@ export default function Home(){
                     }
                 })
             })
-            console.log('pointList: ', pointList)
+            
             setPlanDecisionGeoJson(
                 {
                     "type": "FeatureCollection",
@@ -134,7 +140,6 @@ export default function Home(){
                     ]
                 }
             )
-            console.log(planDecisionGeoJson)
             setContentState(() => {return 3;});
         } else {
             setMsgId("E002");
@@ -160,7 +165,7 @@ export default function Home(){
                         :<PinSelectContent 
                             itemList={itemList} 
                             addDestListFunc={addDestListFunc} 
-                            pref={showData.pref.text} 
+                            prefData={prefData} 
                             cate={showData.cate.text} 
                             planDecisionFunc={planDecisionFunc} 
                             geoData={geoJson}
@@ -171,7 +176,11 @@ export default function Home(){
                     <></>
                 }
                 { contentState === 3 && 
-                    <PlanDecisionContent destinationItems={planDecisionGeoJson} backFunc={backFunc} />
+                    <PlanDecisionContent 
+                        destinationItems={planDecisionGeoJson} 
+                        backFunc={backFunc} 
+                        prefData={prefData} 
+                    />
                 }
             </main>
         </>
