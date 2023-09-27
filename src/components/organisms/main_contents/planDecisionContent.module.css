@@ -101,6 +101,9 @@
     overflow: scroll;
     height: 100%;
 }
+.routeList::-webkit-scrollbar{
+    display: none;
+}
 .routeList li {
     color: var(--color-black);
     padding: 1rem;

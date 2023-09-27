@@ -109,6 +109,9 @@
     box-sizing: border-box;
     overflow: scroll;
 }
+.destinationList .destinationList_inner::-webkit-scrollbar{
+    display: none;
+}
 .destinationList .header {
     border-radius: 3px 3px 0 0;
     padding: 8px 16px;
@@ -124,10 +127,10 @@
 .destinationList > .destinationList_inner > li {
     background-color: rgba(255, 255,255, 0.8);
     color: var(--color-black);
-    padding: 8px 16px;
+    padding: var(--space-s) 16px var(--space-s) var(--space-s);
     border-radius: 2px;
     margin: 0 auto 8px;
-    width: 90%;
+    width: 95%;
     display: block;
     color: var(--color-black);
     box-sizing: border-box;
@@ -135,9 +138,9 @@
 }
 .destinationList > .destinationList_inner > li .icon {
     position: absolute;
-    right: var(--space-s);
+    right: var(--space-xs);
     height: 24px;
-    width: 24px;
+    width: 18px;
     top: var(--space-s);
 }
 

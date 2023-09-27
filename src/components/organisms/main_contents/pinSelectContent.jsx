@@ -19,15 +19,13 @@ import SearchArea from "../searchArea";
 /* import mui */ 
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-
-import data from "./example.geojson";
 import StyleSelector from "../../atoms/styleSelector/styleSelector";
 
 
 
 export default function PinSelectContent(props) {
 
-    const { addDestListFunc, delDestListFunc, planDecisionFunc, itemList, pref, cate, geoData, searchFunc } = props;
+    const { addDestListFunc, delDestListFunc, planDecisionFunc, itemList, prefData, cate, geoData, searchFunc } = props;
 
     /* ~~~~~~~~~ 定数・変数 ~~~~~~~~ */ 
 
@@ -35,6 +33,8 @@ export default function PinSelectContent(props) {
     const [markerInfo, setMarkerInfo] = React.useState({lng: 0, lat: 0, name: ""});
     const [center, setCenter] = React.useState({lng:127.96911949041572, lat:26.588972870618022});
     const [styleIdentifier, setStyleIdentifier] = React.useState('geolonia/basic');
+    const [prefName, setPrefName] = React.useState('');
+    const [selectItems, setSelectItems] = React.useState([]);
     const mapRef = React.useRef(null);
 
     const styleSelectorStyle = {
@@ -54,29 +54,36 @@ export default function PinSelectContent(props) {
     };
     
     React.useEffect(() => {
-        setGeoJson(() => {return geoData});
-    }, [geoData])
+        if(prefData) {
+            setCenter(() => { return { lng: prefData.lng, lat: prefData.lat }});
+            setPrefName(() => { return prefData.name });
+        }
+
+        if(itemList.length > 0) {
+            setSelectItems(() => { return itemList });
+        }
+        if(geoData !== '') {
+            setGeoJson(() => {return geoData});
+        }
+    }, [geoData, itemList, prefData])
 
 
     // onLoad用　callback関数
     const handler = React.useCallback(() => {
-        const map = mapRef.current;
 
-        // マーカーの生成
-        for(let i = 0; i < geoData.elements.length; i++) {
-            setMarker(geoData.elements[i], map);
+        if(geoJson.elements) {
+            const map = mapRef.current;
+
+            // マーカーの生成
+            for(let i = 0; i < geoJson.elements.length; i++) {
+                setMarker(geoJson.elements[i], map);
+            }
+
+            // 中心位置をセット
+            setCenter({lng: prefData.lng, lat: prefData.lat})
         }
 
-        // ディレクションを追加
-        // map.addControl(
-        //     new MapboxDirections({
-        //         accessToken: "3407afe23e7c46cca1391c93f9f84567"
-        //     })
-        // )
-
-    }, [])
-
-
+    }, [geoJson])
     
 
     // マーカーのセット
@@ -109,7 +116,6 @@ export default function PinSelectContent(props) {
 
     // 再検索ボタンクリック処理
     function reSearch() {
-        console.log('call reSearch!!');
         searchFunc();
     }
 
@@ -117,7 +123,7 @@ export default function PinSelectContent(props) {
     // 決定ボタンクリック処理
     function decision() {
         if(markerInfo.lng !== "" && markerInfo.lat !== "" && markerInfo.name !== ""){
-            addDestListFunc({prefecture: pref, category: cate, facilityName: markerInfo.name, lat: markerInfo.lat, lng: markerInfo.lng})
+            addDestListFunc({prefecture: prefName, category: cate, facilityName: markerInfo.name, lat: markerInfo.lat, lng: markerInfo.lng})
         }
     }
 
@@ -142,12 +148,12 @@ export default function PinSelectContent(props) {
                 <div className={styles.destinationArea}>
                     <p className={`${styles.title} ${globalStyle.paddingLeft_m} ${globalStyle.paddingBottom_xs}`}>行き先</p>
                     <p className={`${styles.destination} ${globalStyle.paddingLeft_m}`}>
-                        { pref + ' > ' + cate }
+                        { prefName + ' > ' + cate }
                     </p>
                 </div>
-                <div className={styles.searchArea}>
+                {/* <div className={styles.searchArea}>
                     <SearchArea onClickFunc={reSearch} small/>
-                </div>
+                </div> */}
             </div>
             <div className={styles.mapContentWrapper}>
                 <div className={styles.mapArea}>
@@ -165,7 +171,7 @@ export default function PinSelectContent(props) {
                     <StyleSelector style={styleSelectorStyle} styleIdentifier={styleIdentifier} setStyleIdentifier={setStyleIdentifier} />
                     
                     <div className={`${styles.text_contents} ${globalStyle.paddingRight_s} ${globalStyle.paddingLeft_s} ${globalStyle.paddingTop_l} ${globalStyle.paddingBottom_l}`}>
-                        <p>あなたが最もワクワクするピンを選択してください！！</p>
+                        <p>あなたがワクワクするピンを選択してください！！</p>
                         <Button text="決定" onClickFunc={() => { decision() }} />
                     </div>
                 </div>
@@ -174,8 +180,8 @@ export default function PinSelectContent(props) {
                     <div className={styles.destinationList}>
                         <div className={styles.header}>行きたいところリスト</div>
                         <ul className={styles.destinationList_inner}>
-                            { itemList !== [] &&
-                                itemList.map((val, index) => {
+                            { selectItems.length > 0 &&
+                                selectItems.map((val, index) => {
                                     return (
                                         <li key={"destinationList_li"+index}>
                                             <span>{ val.prefecture + ':' + val.category }</span>
