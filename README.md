@@ -1,2 +1,3 @@
-# DestinationSelectionMap
+# 目的地選択マップ
+複数の目的地を選択し、その経路を表示するマップ。
 
