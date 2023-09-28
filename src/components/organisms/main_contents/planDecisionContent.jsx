@@ -36,63 +36,70 @@ export default function PlanDecisionContent(props) {
     // onLoad用　callback関数
     const handler = React.useCallback(() => {
         const map = mapRef.current;
-
-
         console.log(destinationItems);
         setGeoJson(() => { return destinationItems });
         setCenter({lng: prefData.lng, lat: prefData.lat});
-        
-        let lngLatStr = '';
-
-        for(let e of destinationItems.features) {
-            lngLatStr += lngLatStr===''? e.geometry.coordinates.join(',') : ';' + e.geometry.coordinates.join(',');
-        }
-
-        // ルート情報の検索
-        const getRoute = async () => {
-            const res = await fetch(
-                `http://router.project-osrm.org/route/v1/driving/${lngLatStr}?overview=full&geometries=geojson`
-            )
-            .then((response) => response.json())
-            .catch((err) => console.error(err));
-
-            console.log(res);
-
-            map.addSource('route', {
-                'type': 'geojson',
-                'data': {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': {
-                        'type': 'LineString',
-                        'coordinates': res.routes[0].geometry.coordinates
-                    }
-                }
-            });
-
-            map.addLayer({
-                'id': 'route',
-                'type': 'line',
-                'source': 'route',
-                'layout': {
-                    'line-join': 'round',
-                    'line-cap': 'round'
-                },
-                'paint': {
-                    'line-color': '#0067c0',
-                    'line-width': 5
-                }
-            });
-        }
-
-        getRoute();
         
         // マーカーの生成
         for(let i = 0; i < destinationItems.features.length; i++) {
             setMarker(destinationItems.features[i], map);
         }
 
+        // 経路の追加
+        addRoute(map);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [destinationItems, prefData])
+
+
+    
+    const addRoute = async (map) => {
+        // 経路の表示
+        for(let i=0; i < destinationItems.features.length-1; i++) {
+            const lngLat1 = `${destinationItems.features[i].geometry.coordinates.join(',')};${destinationItems.features[i+1].geometry.coordinates.join(',')}`
+            const lngLat2 = i === 0 ? '' : `;${destinationItems.features[i].geometry.coordinates.join(',')};${destinationItems.features[i-1].geometry.coordinates.join(',')}`
+            const lngLatStr = lngLat1 + lngLat2
+            await getRoute(lngLatStr, map, i++);
+        }
+    }
+
+
+    // ルート情報の取得
+    const getRoute = async (lngLatStr, map, id) => {
+        const res = await fetch(
+            `http://router.project-osrm.org/route/v1/driving/${lngLatStr}?overview=full&geometries=geojson`
+        )
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
+
+        console.log(res);
+
+        map.addSource(`route-${id}`, {
+            'type': 'geojson',
+            'data': {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': res.routes[0].geometry.coordinates
+                }
+            }
+        });
+
+        map.addLayer({
+            'id': `route-${id}`,
+            'type': 'line',
+            'source': `route-${id}`,
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': '#0067c0',
+                'line-width': 5
+            }
+        });
+    }
 
 
     // マーカーのセット
@@ -146,6 +153,7 @@ export default function PlanDecisionContent(props) {
                                 <li key={index}>
                                     <span className={styles.sub_title}>{prop.prefecture + "：" +  prop.category}</span>
                                     <span className={styles.title}>{prop.facilityName}</span>
+                                    {/* TODO:次の目的地までの距離と次の目的地名を表示 */}
                                     <span className={styles.description}>10km 10分</span>
                                 </li>
                             )
